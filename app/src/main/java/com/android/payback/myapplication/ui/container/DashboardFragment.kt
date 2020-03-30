@@ -2,6 +2,7 @@ package com.android.payback.myapplication.ui.container
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,45 +45,43 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.activity_main, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
+       AndroidSupportInjection.inject(this@DashboardFragment)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        activity?.run {
-//            viewModel =
-//                ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
-//                    .also {
-//                        it.navigator = this@DashboardFragment
-//                    }
-//            viewModel.onViewCreated()
-//        }
+        activity?.run {
+            viewModel =
+            ViewModelProvider(this,viewModelFactory).get(DashboardViewModel::class.java).also {
+                it.navigator = this@DashboardFragment
+            }
+        }
         results.adapter = adapter.also { it.itemClick = this }
         initObservables()
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun initObservables() {
-//
-//        viewModel.result.observe(this, Observer {
-//            when (it) {
-//                is Loading -> {
-//                    progress.visibility = View.VISIBLE
-//                }
-//                is ErrorIn -> {
-//                    progress.visibility = View.GONE
-//                }
-//                is Success -> {
-//                    progress.visibility = View.GONE
-//                    showResults((it.data as List<ImageModel>))
-//                }
-//            }
-//        })
+
+        viewModel.result.observe(this, Observer {
+            when (it) {
+                is Loading -> {
+                    progress.visibility = View.VISIBLE
+                }
+                is ErrorIn -> {
+                    progress.visibility = View.GONE
+                }
+                is Success -> {
+                    progress.visibility = View.GONE
+                    showResults((it.data as List<ImageModel>))
+                }
+            }
+        })
         //do search automatically by typing in search field
         compositeDisposable = RxTextView.textChanges(searchBar)
             .skip(MIN_SEARCH_WORD_COUNT)
@@ -101,6 +100,7 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
 
     private fun showResults(hits: List<ImageModel>) {
         adapter.items = hits
+        Log.i("hits", hits.toString())
     }
 
     override fun onItemClick(item: ImageModel) {
