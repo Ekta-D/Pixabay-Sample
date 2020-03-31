@@ -1,12 +1,14 @@
 package com.android.payback.myapplication.ui.container
 
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.payback.myapplication.R
@@ -17,6 +19,7 @@ import com.android.payback.myapplication.model.Success
 import com.android.payback.myapplication.ui.Dashboard.DashboardViewModel
 import com.android.payback.myapplication.ui.Dashboard.ResultsAdapter
 import com.android.payback.myapplication.ui.Dashboard.SearchInterface
+import com.android.payback.myapplication.utils.Cons
 import com.android.payback.myapplication.utils.Cons.Companion.MIN_SEARCH_WORD_COUNT
 import com.android.payback.myapplication.utils.Cons.Companion.SEARCH_DO_DELAY
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -30,7 +33,7 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
-class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemClick {
+class DashboardFragment : Fragment(), SearchInterface, ResultsAdapter.OnItemClick {
     @Inject
     lateinit var adapter: ResultsAdapter
 
@@ -50,17 +53,18 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       AndroidSupportInjection.inject(this@DashboardFragment)
+        AndroidSupportInjection.inject(this@DashboardFragment)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             viewModel =
-            ViewModelProvider(this,viewModelFactory).get(DashboardViewModel::class.java).also {
-                it.navigator = this@DashboardFragment
-            }
+                ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java).also {
+                    it.navigator = this@DashboardFragment
+                }
         }
+        enterSearchWord(Cons.DEFAULT_SEARCH_WORD)
         results.adapter = adapter.also { it.itemClick = this }
         initObservables()
     }
@@ -89,6 +93,7 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 viewModel.search(it.toString())
+                searchBar.hideKeyboard()
             }
     }
 
@@ -96,6 +101,7 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
     override fun enterSearchWord(word: String) {
         searchBar.setText(word)
         viewModel.search(word)
+        searchBar.hideKeyboard()
     }
 
     private fun showResults(hits: List<ImageModel>) {
@@ -114,6 +120,12 @@ class DashboardFragment : Fragment() , SearchInterface, ResultsAdapter.OnItemCli
         super.onDestroy()
         if (!compositeDisposable.isDisposed)
             compositeDisposable.dispose()
+    }
+
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }
 
