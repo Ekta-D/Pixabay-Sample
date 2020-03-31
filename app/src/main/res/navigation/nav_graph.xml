@@ -11,7 +11,7 @@
         tools:layout="@layout/activity_main">
         <action
             android:id="@+id/action_dashboardFragment_to_detailFragment"
-            app:destination="@+id/dashboardFragment" />
+            app:destination="@+id/detailFragment" />
     </fragment>
     <dialog
         android:id="@+id/detailFragment"

@@ -52,7 +52,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/icon"
                 android:text="8000"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="12sp" />
 
 
@@ -85,7 +85,7 @@
                 android:layout_toRightOf="@+id/heartIcon"
                 android:text="8000"
                 android:layout_centerVertical="true"
-                android:textColor="#000"
+                android:textColor="#FFf"
                 android:textSize="12sp" />
 
         </RelativeLayout>

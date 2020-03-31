@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
 import com.android.payback.myapplication.R
 import com.android.payback.myapplication.model.ErrorIn
 import com.android.payback.myapplication.model.ImageModel
@@ -20,6 +22,7 @@ import com.android.payback.myapplication.ui.Dashboard.DashboardViewModel
 import com.android.payback.myapplication.ui.Dashboard.ResultsAdapter
 import com.android.payback.myapplication.ui.Dashboard.SearchInterface
 import com.android.payback.myapplication.utils.Cons
+import com.android.payback.myapplication.utils.Cons.Companion.ITEM_BUNDLE
 import com.android.payback.myapplication.utils.Cons.Companion.MIN_SEARCH_WORD_COUNT
 import com.android.payback.myapplication.utils.Cons.Companion.SEARCH_DO_DELAY
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -110,10 +113,10 @@ class DashboardFragment : Fragment(), SearchInterface, ResultsAdapter.OnItemClic
     }
 
     override fun onItemClick(item: ImageModel) {
-//        findNavController(results).navigate(
-//            R.id.action_dashboardFragment_to_detailFragment,
-//            bundleOf(ITEM_BUNDLE to item)
-//        )
+        findNavController(results).navigate(
+            R.id.action_dashboardFragment_to_detailFragment,
+            bundleOf(ITEM_BUNDLE to item)
+        )
     }
 
     override fun onDestroy() {

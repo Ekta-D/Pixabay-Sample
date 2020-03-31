@@ -36,12 +36,11 @@ class DetailFragment : ExpandedBottomSheetDialog() {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
         activity?.run {
-            viewModel =
-                ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
+            viewModel=ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
         }
-//        arguments?.let {
-//            item = it.getParcelable<>(ITEM_BUNDLE)!!
-//        }
+        arguments?.let {
+            item = it.getSerializable(ITEM_BUNDLE) as ImageModel
+        }
     }
 
 
@@ -58,9 +57,8 @@ class DetailFragment : ExpandedBottomSheetDialog() {
 
         imageLoader.load(url = item.webformatURL, imageView = img)
         username.text = item.user
-//        viewsCount.setCount(item.views)
-//        favoritesCount.setCount(item.favorites)
-
+        count.text=item.views.toString()
+        _heartCount.text=item.favorites.toString()
 //        tagsView.adapter = tagsAdapter.apply {
 //            tags = item.tags!!.split(TAGS_DELIMITER)
 //            tagClick = this@DetailFragment
