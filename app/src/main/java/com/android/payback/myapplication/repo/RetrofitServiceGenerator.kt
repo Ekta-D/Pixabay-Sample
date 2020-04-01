@@ -12,9 +12,7 @@ class RetrofitServiceGenerator @Inject constructor(
     private val baseURL: String
 ) {
 
-    /**
-     * Creates a Retrofit Client object
-     */
+
     fun getClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseURL)

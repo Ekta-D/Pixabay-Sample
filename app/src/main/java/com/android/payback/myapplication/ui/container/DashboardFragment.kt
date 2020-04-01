@@ -2,6 +2,7 @@ package com.android.payback.myapplication.ui.container
 
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -100,7 +103,6 @@ class DashboardFragment : Fragment(), SearchInterface, ResultsAdapter.OnItemClic
             }
     }
 
-    //do search manually
     override fun enterSearchWord(word: String) {
         searchBar.setText(word)
         viewModel.search(word)
@@ -113,10 +115,7 @@ class DashboardFragment : Fragment(), SearchInterface, ResultsAdapter.OnItemClic
     }
 
     override fun onItemClick(item: ImageModel) {
-        findNavController(results).navigate(
-            R.id.action_dashboardFragment_to_detailFragment,
-            bundleOf(ITEM_BUNDLE to item)
-        )
+        basicAlert(item)
     }
 
     override fun onDestroy() {
@@ -129,6 +128,23 @@ class DashboardFragment : Fragment(), SearchInterface, ResultsAdapter.OnItemClic
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun basicAlert(item: ImageModel) {
+        val builder = AlertDialog.Builder(activity!!)
+        builder.setTitle("Do you want to open the details of Image?")
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            findNavController(results).navigate(
+                R.id.action_dashboardFragment_to_detailFragment,
+                bundleOf(ITEM_BUNDLE to item)
+            )
+        }
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+            dialog.cancel()
+        }
+        builder.show()
     }
 }
 

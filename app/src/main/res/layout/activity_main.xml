@@ -61,6 +61,7 @@
         android:id="@+id/searchBar"
         android:gravity="center"
         android:hint="@string/hint"
+        android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="@+id/searchContainer"
         app:layout_constraintEnd_toEndOf="@+id/searchContainer"

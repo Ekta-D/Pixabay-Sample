@@ -90,6 +90,42 @@
 
         </RelativeLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/commentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/favoritesCount"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <ImageView
+                android:id="@+id/commentIcon"
+                android:layout_width="30dp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="6dp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:elevation="1dp"
+                android:src="@drawable/comments" />
+
+            <TextView
+                android:id="@+id/_commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/commentIcon"
+                android:text="8000"
+                android:layout_centerVertical="true"
+                android:textColor="#FFf"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+
+
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="0dp"

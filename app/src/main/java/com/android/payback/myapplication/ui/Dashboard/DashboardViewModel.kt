@@ -26,7 +26,7 @@ class DashboardViewModel @Inject constructor(
         setTag(DEFAULT_SEARCH_WORD)
     }
 
-    //using Coroutines for handle threads
+
     fun search(word: String) {
         viewModelScope.launch {
             result.value = Loading(null)
@@ -36,8 +36,6 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    //navigator is WeakReference to ViewLayer
-    //it's just a sample to showing how to connect presenter/ViewModel layer to view with WeakReference
     fun setTag(tag: String) {
         navigator?.enterSearchWord(tag)
     }

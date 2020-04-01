@@ -10,12 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.payback.myapplication.R
 import com.android.payback.myapplication.model.ImageModel
 import com.android.payback.myapplication.utils.ImageLoader
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.avatar
-import kotlinx.android.synthetic.main.list_item.view.count
 import kotlinx.android.synthetic.main.list_item.view.img
 import kotlinx.android.synthetic.main.list_item.view.username
+import java.math.RoundingMode
 import javax.inject.Inject
 
 class ResultsAdapter @Inject constructor() :
@@ -53,8 +52,6 @@ class ResultsAdapter @Inject constructor() :
         val item = items[position]
         holder.username.text = item.user
         holder.tags.text = item.tags
-        holder.viewsCount.setText(item.views.toString())
-//        holder.favoritesCount.setCount(item.favorites)
 
         imageLoader.load(
             preLoadUrl = item.previewURL,
@@ -78,12 +75,10 @@ class ResultsAdapter @Inject constructor() :
         val avatar: ImageView = view.avatar
         val username: TextView = view.username
         val tags: TextView = view.tags
-        val viewsCount: TextView = view.count
-    //    val favoritesCount: TextView = view._heartCount
     }
 
 
-    fun <T :RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> Unit): T {
+    fun <T : RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> Unit): T {
         itemView.setOnClickListener {
             event.invoke(adapterPosition, itemViewType)
         }

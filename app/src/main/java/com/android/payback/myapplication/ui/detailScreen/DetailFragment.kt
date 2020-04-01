@@ -10,10 +10,10 @@ import com.android.payback.myapplication.R
 import com.android.payback.myapplication.model.ImageModel
 import com.android.payback.myapplication.ui.Dashboard.DashboardViewModel
 import com.android.payback.myapplication.utils.Cons.Companion.ITEM_BUNDLE
-import com.android.payback.myapplication.utils.Cons.Companion.TAGS_DELIMITER
 import com.android.payback.myapplication.utils.ImageLoader
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.math.RoundingMode
 import javax.inject.Inject
 
 
@@ -21,9 +21,6 @@ class DetailFragment : ExpandedBottomSheetDialog() {
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-//    @Inject
-//    lateinit var tagsAdapter: TagsAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -57,16 +54,18 @@ class DetailFragment : ExpandedBottomSheetDialog() {
 
         imageLoader.load(url = item.webformatURL, imageView = img)
         username.text = item.user
-        count.text=item.views.toString()
-        _heartCount.text=item.favorites.toString()
-//        tagsView.adapter = tagsAdapter.apply {
-//            tags = item.tags!!.split(TAGS_DELIMITER)
-//            tagClick = this@DetailFragment
-//        }
+        count.text=setCount(item.views)
+        _heartCount.text=setCount(item.favorites)
+        _commentCount.text=setCount(item.comments)
     }
 
-//    override fun onTagClicked(tag: String) {
-//        viewModel.setTag(tag)
-//         dismiss()
-//    }
+
+    fun setCount(number: Int?): String {
+        var value = number.toString()
+        if (number != null && number >= 1000)
+            value = "${(number.toDouble() / 1000).toBigDecimal().setScale(1, RoundingMode.UP)}k"
+
+        return value
+    }
+
 }
